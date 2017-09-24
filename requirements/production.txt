@@ -1,5 +1,4 @@
-Django
+-r base.txt
 psycopg2
-prettyconf
 dj-database-url
-djangorestframework
+
