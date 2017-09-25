@@ -12,7 +12,7 @@ class UuidPkModel(models.Model):
 
 
 class Channel(UuidPkModel):
-    name = models.CharField(max_length=100, blank=False)
+    name = models.CharField(max_length=60, blank=False)
 
     class Meta:
         ordering = ["name"]
