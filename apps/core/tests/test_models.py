@@ -17,15 +17,9 @@ class ChannelTest(TestCase):
 class CategoryTest(TestCase):
     def test_str_method(self):
         """Test printable string representation of a Category object."""
-        channel = mommy.make("Channel")
-        category = mommy.make("Category", channel=channel)
+        category = mommy.make("Category")
 
-        str_ = "{channel_name} - {category_name}".format(
-            channel_name=category.channel.name,
-            category_name=category.name
-        )
-
-        self.assertEqual(str(category), str_)
+        self.assertEqual(str(category), category.name)
 
     def test_create_category(self):
         mommy.make("Category")

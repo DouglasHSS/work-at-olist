@@ -36,10 +36,7 @@ class Category(UuidPkModel):
         verbose_name_plural = "Categories"
 
     def __str__(self):
-        return "{channel_name} - {category_name}".format(
-            channel_name=self.channel.name,
-            category_name=self.name
-        )
+        return self.name
 
     @property
     def parents(self):
