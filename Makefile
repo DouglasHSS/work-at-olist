@@ -17,6 +17,9 @@ migrate:
 	./manage.py makemigrations --settings=$(SETTINGS)
 	./manage.py migrate --settings=$(SETTINGS)
 
+import_categories:
+	./manage.py import_categories $(CHANNEL_NAME) $(CSV_PATH) --settings=$(SETTINGS)
+
 new_app:
 	mkdir apps/$(NAME)
 	django-admin startapp $(NAME) apps/$(NAME)
