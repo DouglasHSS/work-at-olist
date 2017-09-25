@@ -42,7 +42,7 @@ class Category(UuidPkModel):
         )
 
     @property
-    def path(self):
-        if self.parent_category is not None:
-            return self.parent_category.path + [self]
-        return [self]
+    def parents(self):
+        if self.parent_category is None:
+            return []
+        return self.parent_category.parents + [self.parent_category]
