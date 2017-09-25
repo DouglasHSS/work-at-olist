@@ -24,12 +24,10 @@ class Channel(UuidPkModel):
 
 
 class Category(UuidPkModel):
-
-    parent_category = models.ForeignKey("Category",
-                                        related_name="subcategories",
-                                        verbose_name="Channel", null=True)
-    channel = models.ForeignKey("Channel", related_name="categories",
-                                verbose_name="Channel")
+    channel = models.ForeignKey("Channel", related_name="categories", verbose_name="Channel")
+    parent_category = models.ForeignKey(
+        "Category", related_name="subcategories", verbose_name="Channel", null=True
+    )
     name = models.CharField(max_length=20, blank=False, verbose_name="Name")
 
     class Meta:
@@ -42,3 +40,9 @@ class Category(UuidPkModel):
             channel_name=self.channel.name,
             category_name=self.name
         )
+
+    @property
+    def path(self):
+        if self.parent_category is not None:
+            return self.parent_category.path + [self]
+        return [self]

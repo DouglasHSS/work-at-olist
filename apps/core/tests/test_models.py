@@ -5,8 +5,8 @@ from model_mommy import mommy
 
 
 class ChannelTest(TestCase):
-
     def test_str_method(self):
+        """Test printable string representation of a Channel object."""
         channel = mommy.make("Channel")
         self.assertEqual(str(channel), channel.name)
 
@@ -15,8 +15,8 @@ class ChannelTest(TestCase):
 
 
 class CategoryTest(TestCase):
-
     def test_str_method(self):
+        """Test printable string representation of a Category object."""
         channel = mommy.make("Channel")
         category = mommy.make("Category", channel=channel)
 
@@ -29,3 +29,17 @@ class CategoryTest(TestCase):
 
     def test_create_category(self):
         mommy.make("Category")
+
+    def test_check_path(self):
+        """Test category path till its root parent category."""
+        node_1 = mommy.make("Category")
+        node_2 = mommy.make("Category", parent_category=node_1)
+        node_3 = mommy.make("Category", parent_category=node_2)
+
+        path_1 = [node_1]
+        path_2 = [node_1, node_2]
+        path_3 = [node_1, node_2, node_3]
+
+        self.assertEqual(path_1, node_1.path)
+        self.assertEqual(path_2, node_2.path)
+        self.assertEqual(path_3, node_3.path)
