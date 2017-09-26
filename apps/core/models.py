@@ -22,11 +22,16 @@ class Channel(UuidPkModel):
     def __str__(self):
         return self.name
 
+    @property
+    def root_categories(self):
+        """Property to return only categories without parent."""
+        return self.categories.filter(parent_category__isnull=True)
+
 
 class Category(UuidPkModel):
     channel = models.ForeignKey("Channel", related_name="categories", verbose_name="Channel")
     parent_category = models.ForeignKey(
-        "Category", related_name="subcategories", verbose_name="Channel", null=True
+        "self", related_name="subcategories", verbose_name="Channel", null=True
     )
     name = models.CharField(max_length=20, blank=False, verbose_name="Name")
 
@@ -40,6 +45,12 @@ class Category(UuidPkModel):
 
     @property
     def parent_categories(self):
+        """Property to returns recursively all parent_category above a category."""
         if self.parent_category is None:
             return []
         return self.parent_category.parent_categories + [self.parent_category]
+
+    @property
+    def all_subcategories(self):
+        """Property to overcome issues in RecursiveField in serializer."""
+        return self.subcategories.all()
