@@ -7,3 +7,6 @@
 *.log
 .env
 tmp
+*.sqlite3
+.coverage
+/htmlcov

@@ -1,1 +1,4 @@
--r production.txt
+-r base.txt
+coverage==4.4.1
+ipython==6.2.0
+model-mommy==1.4.0
