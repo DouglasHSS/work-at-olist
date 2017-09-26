@@ -4,9 +4,6 @@ SETTINGS=config.settings.local
 install_local_deps:
 	pip install -r requirements/local.txt
 
-install_heroku_deps:
-	pip install -r requirements/heroku.txt
-
 run_server:
 	./manage.py runserver 127.0.0.1:$(PORT) --settings=$(SETTINGS)
 

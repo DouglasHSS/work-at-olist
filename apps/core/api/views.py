@@ -2,12 +2,19 @@
 
 from rest_framework import viewsets
 
-from apps.core.api.serializer import ChannelListSerializer, ChannelDetailSerializer,\
+from apps.core.api.serializer import ChannelListSerializer, ChannelDetailSerializer, \
     CategoryListSerializer, CategoryDetailSerializer
 from apps.core.models import Channel, Category
 
 
 class ChannelViewSet(viewsets.ReadOnlyModelViewSet):
+    """
+    list:
+    Return a list of all the existing channels.
+
+    retrieve:
+    Return the given category.
+    """
     queryset = Channel.objects.all()
 
     def get_serializer_class(self):
@@ -17,6 +24,13 @@ class ChannelViewSet(viewsets.ReadOnlyModelViewSet):
 
 
 class CategoryViewSet(viewsets.ReadOnlyModelViewSet):
+    """
+    list:
+    Return a list of all the existing categories.
+
+    retrieve:
+    Return the given category.
+    """
     queryset = Category.objects.all()
 
     def get_serializer_class(self):
