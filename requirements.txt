@@ -1,2 +1,4 @@
 -r requirements/base.txt
 gunicorn
+whitenoise==3.3.1
+
