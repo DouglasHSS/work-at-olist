@@ -3,12 +3,12 @@
 from django.test import TestCase
 from model_mommy import mommy
 
-from apps.core.api.serializer import ChannelSerializer
+from apps.core.api.serializer import ChannelSerializer, CategorySerializer
 
 
 class ChannelSerializerTest(TestCase):
     def test_channel_serialization(self):
-        """Test wether channel serialization was well succeed."""
+        """Test whether channel serialization was well succeed."""
 
         channel = mommy.make("Channel")
         serializer = ChannelSerializer(channel)
@@ -24,3 +24,19 @@ class ChannelSerializerTest(TestCase):
 
         self.assertFalse(serializer.is_valid())
         self.assertCountEqual(serializer.errors.keys(), ["name"])
+
+
+class CategorySerializerTest(TestCase):
+    def test_category_serialization(self):
+        """Test whether category serialization was well succeed."""
+
+        self.channel = mommy.make("Channel")
+        self.node_1 = mommy.make("Category")
+        self.node_2 = mommy.make("Category", parent_category=self.node_1)
+        self.node_3 = mommy.make("Category", parent_category=self.node_2)
+
+        serializer = CategorySerializer(self.node_2)
+
+        self.assertCountEqual(
+            serializer.data.keys(), ["id", "name", "channel", "parents", "subcategories"]
+        )
