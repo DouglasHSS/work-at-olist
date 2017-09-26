@@ -39,7 +39,7 @@ class Category(UuidPkModel):
         return self.name
 
     @property
-    def parents(self):
+    def parent_categories(self):
         if self.parent_category is None:
             return []
-        return self.parent_category.parents + [self.parent_category]
+        return self.parent_category.parent_categories + [self.parent_category]

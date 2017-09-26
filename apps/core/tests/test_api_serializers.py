@@ -34,5 +34,5 @@ class CategorySerializerTest(TestCase):
         serializer = CategorySerializer(node_1)
 
         self.assertCountEqual(
-            serializer.data.keys(), ["id", "name", "channel", "parents", "subcategories"]
+            serializer.data.keys(), ["id", "name", "channel", "parent_categories", "subcategories"]
         )

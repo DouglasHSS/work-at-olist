@@ -24,16 +24,16 @@ class CategoryTest(TestCase):
     def test_create_category(self):
         mommy.make("Category")
 
-    def test_check_parents(self):
-        """Test previous parents of a single category."""
-        node_1 = mommy.make("Category", name="1")
-        node_2 = mommy.make("Category", name="2", parent_category=node_1)
-        node_3 = mommy.make("Category", name="3", parent_category=node_2)
+    def test_check_parent_categories(self):
+        """Test previous parent_categories of a single category."""
+        category_1 = mommy.make("Category", name="1")
+        category_2 = mommy.make("Category", name="2", parent_category=category_1)
+        category_3 = mommy.make("Category", name="3", parent_category=category_2)
 
-        parents_node_1 = []
-        parents_node_2 = [node_1]
-        parents_node_3 = [node_1, node_2]
+        parent_categories_1 = []
+        parent_categories_2 = [category_1]
+        parent_categories_3 = [category_1, category_2]
 
-        self.assertEqual(parents_node_1, node_1.parents)
-        self.assertEqual(parents_node_2, node_2.parents)
-        self.assertEqual(parents_node_3, node_3.parents)
+        self.assertEqual(parent_categories_1, category_1.parent_categories)
+        self.assertEqual(parent_categories_2, category_2.parent_categories)
+        self.assertEqual(parent_categories_3, category_3.parent_categories)

@@ -34,7 +34,7 @@ class CategoryViewSetTests(APITestCase):
         category = {"id": str(category_2.id),
                     "name": category_2.name,
                     "channel": category_2.channel.name,
-                    "parents": [str(category_1)],
+                    "parent_categories": [str(category_1)],
                     "subcategories": [str(category_3)]}
 
         url = reverse('core-api:category-detail', args=[category_2.id])
