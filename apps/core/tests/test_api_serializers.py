@@ -30,12 +30,8 @@ class CategorySerializerTest(TestCase):
     def test_category_serialization(self):
         """Test whether category serialization was well succeed."""
 
-        self.channel = mommy.make("Channel")
-        self.node_1 = mommy.make("Category")
-        self.node_2 = mommy.make("Category", parent_category=self.node_1)
-        self.node_3 = mommy.make("Category", parent_category=self.node_2)
-
-        serializer = CategorySerializer(self.node_2)
+        node_1 = mommy.make("Category")
+        serializer = CategorySerializer(node_1)
 
         self.assertCountEqual(
             serializer.data.keys(), ["id", "name", "channel", "parents", "subcategories"]
