@@ -18,7 +18,7 @@ SECRET_KEY = os.environ.get("SECRET_KEY_OLIST_PROJECT")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["douglas-work-at-olist.herokuapp.com"]
 
 # Application definition
 
