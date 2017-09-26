@@ -5,40 +5,61 @@ from model_mommy import mommy
 from rest_framework import status
 from rest_framework.test import APITestCase
 
+from apps.core.api.serializer import ChannelListSerializer, ChannelDetailSerializer, \
+    CategoryListSerializer, CategoryDetailSerializer
+
 
 class ChannelViewSetTests(APITestCase):
-    def test_list_channels(self):
-        """Test endpoint which lists all channels."""
+    def test_list_all_channels(self):
+        """Test whether 'core-api:channel-list' lists all existing channels."""
 
-        channel_1 = mommy.make("Channel", name="WALMART")
-        channel_2 = mommy.make("Channel", name="SUBMARINO")
+        channels = [mommy.make("Channel") for _ in range(10)]
 
-        channels = [{"id": str(channel_1.id), "name": channel_1.name},
-                    {"id": str(channel_2.id), "name": channel_2.name}]
+        serializer = ChannelListSerializer(instance=channels, many=True)
 
         url = reverse('core-api:channel-list')
         response = self.client.get(url, format='json')
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertCountEqual(channels, response.data)
+        self.assertCountEqual(serializer.data, response.data)
 
+    def test_retrieve_channel_details(self):
+        """Test whether 'core-api:channel-detail' retrieves the correct channel."""
 
-class CategoryViewSetTests(APITestCase):
-    def test_retrieve_category(self):
-        """Test endpoint which retrieves a category channel."""
+        channel = mommy.make("Channel")
 
-        category_1 = mommy.make("Category")
-        category_2 = mommy.make("Category", parent_category=category_1)
-        category_3 = mommy.make("Category", parent_category=category_2)
+        serializer = ChannelDetailSerializer(instance=channel)
 
-        category = {"id": str(category_2.id),
-                    "name": category_2.name,
-                    "channel": category_2.channel.name,
-                    "parent_categories": [str(category_1)],
-                    "subcategories": [str(category_3)]}
-
-        url = reverse('core-api:category-detail', args=[category_2.id])
+        url = reverse('core-api:channel-detail', args=[channel.id])
         response = self.client.get(url, format='json')
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(category, response.data)
+        self.assertEqual(serializer.data, response.data)
+
+
+class CategoryViewSetTests(APITestCase):
+    def test_list_all_categories(self):
+        """Test whether 'core-api:category-list' list all existing categories."""
+
+        categories = [mommy.make("Category") for _ in range(10)]
+
+        serializer = CategoryListSerializer(instance=categories, many=True)
+
+        url = reverse('core-api:category-list')
+        response = self.client.get(url, format='json')
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertCountEqual(serializer.data, response.data)
+
+    def test_retrieve_category_details(self):
+        """Test whether 'core-api:category-detail' retrieves the correct category."""
+
+        category = mommy.make("Category")
+
+        serializer = CategoryDetailSerializer(instance=category)
+
+        url = reverse('core-api:category-detail', args=[category.id])
+        response = self.client.get(url, format='json')
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(serializer.data, response.data)

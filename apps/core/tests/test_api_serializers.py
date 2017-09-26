@@ -3,36 +3,48 @@
 from django.test import TestCase
 from model_mommy import mommy
 
-from apps.core.api.serializer import ChannelSerializer, CategorySerializer
+from apps.core.api.serializer import ChannelListSerializer, ChannelDetailSerializer, \
+    CategoryListSerializer, CategoryDetailSerializer
 
 
-class ChannelSerializerTest(TestCase):
-    def test_channel_serialization(self):
-        """Test whether channel serialization was well succeed."""
+class ChannelListSerializerTest(TestCase):
+
+    def test_contain_expected_attributes(self):
+        """Test whether a serialized channel has the expected attributes"""
 
         channel = mommy.make("Channel")
-        serializer = ChannelSerializer(channel)
+        serializer = ChannelListSerializer(channel)
 
         self.assertCountEqual(serializer.data.keys(), ["id", "name"])
-        self.assertCountEqual(serializer.data.values(), [str(channel.id), channel.name])
-
-    def test_max_length_channel_name(self):
-        """Test max_length constraint in channel's name field."""
-
-        serializer_data = {"name": "a" * 61}
-        serializer = ChannelSerializer(data=serializer_data)
-
-        self.assertFalse(serializer.is_valid())
-        self.assertCountEqual(serializer.errors.keys(), ["name"])
 
 
-class CategorySerializerTest(TestCase):
-    def test_category_serialization(self):
-        """Test whether category serialization was well succeed."""
+class CategoryListSerializerTest(TestCase):
+    def test_contain_expected_attributes(self):
+        """Test whether a serialized category contains the expected attributes"""
 
-        node_1 = mommy.make("Category")
-        serializer = CategorySerializer(node_1)
+        category = mommy.make("Category")
+        serializer = CategoryListSerializer(category)
 
         self.assertCountEqual(
             serializer.data.keys(), ["id", "name", "channel", "parent_categories", "subcategories"]
         )
+
+
+class ChannelDetailSerializerTest(TestCase):
+    def test_contain_expected_attributes(self):
+        """Test whether a serialized channel contains the expected attributes"""
+
+        channel = mommy.make("Channel")
+        serializer = ChannelDetailSerializer(channel)
+
+        self.assertCountEqual(serializer.data.keys(), ["id", "name", "categories"])
+
+
+class CategoryDetailSerializerTest(TestCase):
+    def test_contain_expected_attributes(self):
+        """Test whether a serialized category contains the expected attributes"""
+
+        category = mommy.make("Category")
+        serializer = CategoryDetailSerializer(category)
+
+        self.assertCountEqual(serializer.data.keys(), ["name", "all_subcategories"])
